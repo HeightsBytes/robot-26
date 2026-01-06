@@ -7,10 +7,18 @@
 #include <frc2/command/Commands.h>
 
 RobotContainer::RobotContainer() {
-  ConfigureBindings();
+  ConfigureDriverButtons();
+  ConfigureOperatorButtons();
+
+  m_drive.SetDefaultCommand(DefaultDrive(
+    &m_drive, [this] { return m_driverController.GetLeftX(); },
+    [this] { return m_driverController.GetLeftY(); },
+    [this] { return m_driverController.GetRightX(); },
+    [this] { return m_driverController.GetRightTriggerAxis(); }));
 }
 
-void RobotContainer::ConfigureBindings() {}
+void RobotContainer::ConfigureDriverButtons() {}
+void RobotContainer::ConfigureOperatorButtons() {}
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   return frc2::cmd::Print("No autonomous command configured");
