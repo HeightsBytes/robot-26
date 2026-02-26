@@ -6,15 +6,15 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 using namespace hb;
-using namespace ctre::phoenix::sensors;
+using namespace ctre::phoenix6::hardware;
 
 S_CANCoder::S_CANCoder(int Id, double offset = 0)
-    : CANCoder(Id), m_offset(offset), m_ID(Id) {
-  std::printf("CANCoder: %i, reading %5.2f\n", Id, GetAbsolutePosition() - 180);
+    : ctre::phoenix6::hardware::CANcoder(Id), m_offset(offset), m_ID(Id) {
+  std::printf("CANCoder: %i, reading %5.2f\n", Id, GetAbsolutePosition().GetValue().value() - 180);
 }
 
 units::radian_t S_CANCoder::Get() {
-  double rv = GetAbsolutePosition() - m_offset;
+  double rv = GetAbsolutePosition().GetValue().value() - m_offset;
  // frc::SmartDashboard::PutNumber("cancoder abs position", GetAbsolutePosition());
  // frc::SmartDashboard::PutNumber("cancoder position", GetPosition());
 
