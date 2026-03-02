@@ -117,6 +117,10 @@ namespace AutoConstants {
 } // namespace AutoConstants
 
 namespace OIConstants {
-inline constexpr int kDriverControllerPort = 0;
-inline constexpr int kOperatorControllerPort = 1;
+  inline constexpr int kDriverControllerPort = 0;
+  inline constexpr int kOperatorControllerPort = 1;
 }  // namespace OIConstants
+
+namespace ShooterConstants{
+  inline constexpr int kShooterMotorPort = 1000;
+}
