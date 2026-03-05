@@ -140,6 +140,9 @@ void DriveSubsystem::SetPose(frc::Pose2d pose) {
 frc2::CommandPtr DriveSubsystem::SetGyro(units::degree_t angle) {
   return this->RunOnce([angle, this] { SetOffset(angle); });
 }
+frc2::CommandPtr DriveSubsystem::ResetGyroCMD(){
+  return this->RunOnce([this] {m_gyro.Reset(); });
+}
 
 void DriveSubsystem::InitSendable(wpi::SendableBuilder& builder) {
 #define LAMBDA(x) [this] { return x; }

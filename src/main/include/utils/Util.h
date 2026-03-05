@@ -25,6 +25,6 @@ namespace hb {
   }
 
   inline int DistanceRegression(double distance){
-    return 0.25;  
+    return 0.7;  
   }
 }  // namespace hb

@@ -22,11 +22,11 @@ namespace DriveConstants {
         inline constexpr int kFrontLeftDriveMotorPort = 7; 
         inline constexpr int kRearLeftDriveMotorPort = 2;
         inline constexpr int kFrontRightDriveMotorPort = 8;
-        inline constexpr int kRearRightDriveMotorPort = 4 ;
+        inline constexpr int kRearRightDriveMotorPort = 41;
 
         inline constexpr int kFrontLeftTurningMotorPort = 6;
         inline constexpr int kRearLeftTurningMotorPort = 3;
-        inline constexpr int kFrontRightTurningMotorPort = 10;
+        inline constexpr int kFrontRightTurningMotorPort = 62;
         inline constexpr int kRearRightTurningMotorPort = 5;
 
         inline constexpr int kFrontLeftTurningEncoderPorts = 1;
@@ -36,10 +36,10 @@ namespace DriveConstants {
 
         inline constexpr int kPidgeonID = 20;
     } // namespace CanIds
-  inline constexpr double kFrontRightOffset = 107.31 - 180;
-  inline constexpr double kFrontLeftOffset = 228.25;
-  inline constexpr double kRearRightOffset = 193.45 - 180;
-  inline constexpr double kRearLeftOffset = 128.76; // - 180 if inverted
+  inline constexpr double kFrontRightOffset = -180;
+  inline constexpr double kFrontLeftOffset = 0;
+  inline constexpr double kRearRightOffset = 0;
+  inline constexpr double kRearLeftOffset = 0; // - 180 if inverted
 
   inline constexpr bool kFrontRightInverted = true;
   inline constexpr bool kFrontLeftInverted = true;
@@ -122,7 +122,7 @@ namespace OIConstants {
 }  // namespace OIConstants
 
 namespace ShooterConstants{
-  inline constexpr int kShooterMotorPort = 1000;
+  inline constexpr int kShooterMotorPort = 24; // i gave up numbering them real talk
 }
 
 namespace IntakeConstants{
@@ -140,7 +140,7 @@ namespace IntakeConstants{
 
   namespace Speeds{
     inline constexpr double kStopped = 0;
-    inline constexpr double kIntaking = 0.5;
+    inline constexpr double kIntaking = 0.25;
   }
   namespace PivotPositions{
     inline constexpr double kUp = 0;

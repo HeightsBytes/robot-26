@@ -11,6 +11,8 @@
 
 #include "Constants.h"
 #include "subsystems/DriveSubsystem.h"
+#include "subsystems/ShooterSubsystem.h"
+
 #include "commands/DefaultDrive.h"
 
 class RobotContainer {
@@ -32,6 +34,7 @@ class RobotContainer {
 
   // The robot's subsystems
   DriveSubsystem m_drive;
+  ShooterSubsystem m_shooter;
 
 
   void ConfigureDriverButtons();

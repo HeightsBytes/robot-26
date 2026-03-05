@@ -113,6 +113,7 @@ class DriveSubsystem : public frc2::SubsystemBase {
   void SetPose(frc::Pose2d pose);
 
   frc2::CommandPtr SetGyro(units::degree_t angle);
+  frc2::CommandPtr ResetGyroCMD();
 
   void InitSendable(wpi::SendableBuilder& builder) override;
 
