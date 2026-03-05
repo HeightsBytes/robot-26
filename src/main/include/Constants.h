@@ -124,3 +124,27 @@ namespace OIConstants {
 namespace ShooterConstants{
   inline constexpr int kShooterMotorPort = 1000;
 }
+
+namespace IntakeConstants{
+  inline constexpr int kIntakeMotorPort = 1000;
+  inline constexpr int kPivot1MotorPort = 1000;
+  inline constexpr int kPivot2MotorPort = 1000;
+
+  inline constexpr double kPivotEncoderRatio = 1;
+
+  inline constexpr int kP = 0;
+  inline constexpr int kI = 0;
+  inline constexpr int kD = 0;
+  inline constexpr double kMinOutput = -0.1;
+  inline constexpr double kMaxOutput = 0.1;
+
+  namespace Speeds{
+    inline constexpr double kStopped = 0;
+    inline constexpr double kIntaking = 0.5;
+  }
+  namespace PivotPositions{
+    inline constexpr double kUp = 0;
+    inline constexpr double kDown = 0;
+    inline constexpr double kTolerance = 0;
+  }
+}

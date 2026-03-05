@@ -71,8 +71,8 @@ class IntakeSubsystem : public frc2::SubsystemBase {
 
   void CheckState();
 
-  std::string ToStr(PivotState state) const;
-  std::string ToStr(IntakeState state) const;
+ // std::string ToStr(PivotState state) const;
+ // std::string ToStr(IntakeState state) const;
 
   // motors
   rev::spark::SparkFlex m_intake;
