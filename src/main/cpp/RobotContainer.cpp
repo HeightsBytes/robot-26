@@ -19,8 +19,8 @@ RobotContainer::RobotContainer() {
 
 void RobotContainer::ConfigureDriverButtons() {
   m_driverController.LeftTrigger()
-  .OnTrue(m_shooter.SetShooterTargetCMD(ShooterSubsystem::State::kShooting))
-  .OnFalse(m_shooter.SetShooterTargetCMD(ShooterSubsystem::State::kStopped));
+    .OnTrue(m_shooter.SetShooterTargetCMD(ShooterSubsystem::State::kShooting))
+    .OnFalse(m_shooter.SetShooterTargetCMD(ShooterSubsystem::State::kStopped));
   m_driverController.Start().OnTrue(m_drive.ResetGyroCMD());
 }
 void RobotContainer::ConfigureOperatorButtons() {}

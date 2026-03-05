@@ -4,6 +4,7 @@
 
 #include "subsystems/ShooterSubsystem.h"
 #include "utils/Util.h"
+#include <frc2/command/Command.h>
 
 ShooterSubsystem::ShooterSubsystem() :
     m_shooter(ShooterConstants::kShooterMotorPort, rev::spark::SparkFlex::MotorType::kBrushless),
@@ -21,8 +22,8 @@ void ShooterSubsystem::Periodic() {
 
     if(m_target == State::kStopped){
         m_shooter.StopMotor();
-    } else {
-        m_shooter.Set(hb::DistanceRegression(1));
+    } else if(m_target == State::kShooting){
+        m_shooter.Set(.7); // fix this at grizzy
     }
 
 }
