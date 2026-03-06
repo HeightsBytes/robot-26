@@ -9,12 +9,12 @@ IntakeSubsystem::IntakeSubsystem() :
     m_pivot1(IntakeConstants::kPivot1MotorPort, rev::spark::SparkFlex::MotorType::kBrushless),
     m_pivot2(IntakeConstants::kPivot2MotorPort, rev::spark::SparkFlex::MotorType::kBrushless),
 
-    m_pivotEncoder(m_pivot1.GetEncoder()),
+    m_pivot1Encoder(m_pivot1.GetEncoder()),
+    m_pivot2Encoder(m_pivot2.GetEncoder()),
     m_pivot1Controller(m_pivot1.GetClosedLoopController()),
     m_pivot2Controller(m_pivot2.GetClosedLoopController()),
 
-    m_pivotActual(PivotState::kSwitching),
-    m_pivotTarget(PivotState::kUp),
+    m_pivotTarget(PivotState::kStopped),
     m_intakeTarget(IntakeState::kStopped) {
 
         m_pivot1Config
@@ -23,7 +23,7 @@ IntakeSubsystem::IntakeSubsystem() :
             .SmartCurrentLimit(30);
         m_pivot2Config
             .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kBrake)
-            .Inverted(false)
+            .Inverted(true)
             .SmartCurrentLimit(30);
         m_intakeConfig
             .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast)
@@ -31,21 +31,13 @@ IntakeSubsystem::IntakeSubsystem() :
         m_pivot1Config.encoder
             .PositionConversionFactor(IntakeConstants::kPivotEncoderRatio);
         m_pivot1Config.closedLoop
-            .Pid(
-                IntakeConstants::kP,
-                IntakeConstants::kI,
-                IntakeConstants::kD
-            )
-            .PositionWrappingEnabled(false)
-            .OutputRange(IntakeConstants::kMinOutput, IntakeConstants::kMaxOutput);
+            .Pid(IntakeConstants::kP, IntakeConstants::kI, IntakeConstants::kD)
+            .PositionWrappingEnabled(false);
+            //.OutputRange(IntakeConstants::kMinOutput, IntakeConstants::kMaxOutput);
         m_pivot2Config.closedLoop
-            .Pid(
-                IntakeConstants::kP,
-                IntakeConstants::kI,
-                IntakeConstants::kD
-            )
-            .PositionWrappingEnabled(false)
-            .OutputRange(IntakeConstants::kMinOutput, IntakeConstants::kMaxOutput);
+            .Pid(IntakeConstants::kP, IntakeConstants::kI, IntakeConstants::kD)
+            .PositionWrappingEnabled(false);
+            //.OutputRange(IntakeConstants::kMinOutput, IntakeConstants::kMaxOutput);
 
         m_intake.Configure(m_intakeConfig, rev::spark::SparkFlex::ResetMode::kResetSafeParameters, rev::spark::SparkFlex::PersistMode::kPersistParameters);
         m_pivot1.Configure(m_pivot1Config, rev::spark::SparkFlex::ResetMode::kResetSafeParameters, rev::spark::SparkFlex::PersistMode::kPersistParameters);
@@ -57,13 +49,44 @@ IntakeSubsystem::IntakeSubsystem() :
 void IntakeSubsystem::Periodic() {
     CheckState();
 
-    m_pivot1Controller.SetSetpoint(StateToOutput(m_pivotTarget), rev::spark::SparkMax::ControlType::kPosition);
-    m_pivot2Controller.SetSetpoint(StateToOutput(m_pivotTarget), rev::spark::SparkMax::ControlType::kPosition);
+    frc::SmartDashboard::PutString("pivot actual", ToStr(m_pivotActual));
+    frc::SmartDashboard::PutString("pivot target", ToStr(m_pivotTarget));
+    frc::SmartDashboard::PutNumber("pivot angle", GetPivotAngle());
 
-    if(StateToOutput(m_intakeTarget) == IntakeConstants::Speeds::kStopped){
+    /*
+    if(m_pivotTarget == PivotState::kDown){
+        frc::SmartDashboard::PutString("debug state", "trying to move down");
+        m_pivot1Controller.SetSetpoint(4, rev::spark::SparkFlex::ControlType::kPosition);
+        m_pivot2Controller.SetSetpoint(4, rev::spark::SparkFlex::ControlType::kPosition);
+    }
+    if(m_pivotTarget == PivotState::kUp){
+        frc::SmartDashboard::PutString("debug state", "trying to move up");
+        m_pivot1Controller.SetSetpoint(0, rev::spark::SparkFlex::ControlType::kPosition);
+        m_pivot2Controller.SetSetpoint(0, rev::spark::SparkFlex::ControlType::kPosition);
+    }
+    */
+
+    if(m_pivotTarget == PivotState::kDown){
+        m_pivot1.Set(.05);
+        m_pivot2.Set(.05);
+    }
+    if(m_pivotTarget == PivotState::kUp){
+        m_pivot1.Set(-0.05);
+        m_pivot2.Set(-0.05);
+    }
+    if(m_pivotTarget == PivotState::kStopped){
+        m_pivot1.StopMotor();
+        m_pivot2.StopMotor();
+    }
+    
+
+    //m_pivot1Controller.SetSetpoint(StateToOutput(m_pivotTarget), rev::spark::SparkMax::ControlType::kPosition); // here
+    //m_pivot2Controller.SetSetpoint(StateToOutput(m_pivotTarget), rev::spark::SparkMax::ControlType::kPosition); // here
+
+    if(m_intakeTarget == IntakeState::kStopped){
         m_intake.StopMotor();
-    } else {
-        m_intake.Set(StateToOutput(m_intakeTarget));
+    } else if (m_intakeTarget == IntakeState::kIntaking) {
+        m_intake.Set(IntakeConstants::Speeds::kIntaking);
     }
 }
 
@@ -90,9 +113,11 @@ double IntakeSubsystem::StateToOutput(PivotState state) const {
 
     switch(state){
         case kUp:
+            std::printf("hi");
             return PP::kUp;
             break;
         case kDown:
+            std::printf("trying to go down");
             return PP::kDown;
             break;
         default:
@@ -102,6 +127,7 @@ double IntakeSubsystem::StateToOutput(PivotState state) const {
 }
 
 void IntakeSubsystem::CheckState(){
+    frc::SmartDashboard::PutString("debug state", "checking state");
     using enum PivotState;
     namespace PP = IntakeConstants::PivotPositions;
 
@@ -117,4 +143,34 @@ void IntakeSubsystem::CheckState(){
     }
 
     m_pivotActual = kSwitching;
+}
+
+
+std::string IntakeSubsystem::ToStr(IntakeState state) const{
+    using enum IntakeState;
+
+    switch(state){
+        case kIntaking:
+            return "Intaking";
+            break;
+        case kStopped:
+            return "kStopped";
+            break;
+    }
+}
+
+std::string IntakeSubsystem::ToStr(PivotState state) const{
+    using enum PivotState;
+
+    switch(state){
+        case kUp:
+            return "Up";
+            break;
+        case kDown:
+            return "Down";
+            break;
+        case kSwitching:
+            return "Switching";
+            break;
+    }
 }

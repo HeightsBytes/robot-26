@@ -25,7 +25,8 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   enum class PivotState{
     kSwitching,
     kUp,
-    kDown
+    kDown,
+    kStopped
   };
   enum class IntakeState{
     kIntaking,
@@ -37,7 +38,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
 
   // util functions
   double GetPivotAngle() const{
-    return m_pivotEncoder.GetPosition();
+    return m_pivot1Encoder.GetPosition();
   }
   bool AtPivotTarget();
 
@@ -71,8 +72,8 @@ class IntakeSubsystem : public frc2::SubsystemBase {
 
   void CheckState();
 
- // std::string ToStr(PivotState state) const;
- // std::string ToStr(IntakeState state) const;
+  std::string ToStr(PivotState state) const;
+  std::string ToStr(IntakeState state) const;
 
   // motors
   rev::spark::SparkFlex m_intake;
@@ -83,7 +84,8 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   rev::spark::SparkMaxConfig m_pivot2Config;
   rev::spark::SparkFlexConfig m_intakeConfig;
 
-  rev::spark::SparkRelativeEncoder m_pivotEncoder;
+  rev::spark::SparkRelativeEncoder m_pivot1Encoder;
+  rev::spark::SparkRelativeEncoder m_pivot2Encoder;
   rev::spark::SparkClosedLoopController m_pivot1Controller;
   rev::spark::SparkClosedLoopController m_pivot2Controller;
   // end motors

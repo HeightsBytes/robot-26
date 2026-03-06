@@ -8,7 +8,8 @@
 
 ShooterSubsystem::ShooterSubsystem() :
     m_shooter(ShooterConstants::kShooterMotorPort, rev::spark::SparkFlex::MotorType::kBrushless),
-    m_target(State::kStopped) {
+    m_target(State::kStopped),
+    kPower(ShooterConstants::kDefaultPower) {
 
         m_shooterConfig
             .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kCoast)
@@ -23,9 +24,9 @@ void ShooterSubsystem::Periodic() {
     if(m_target == State::kStopped){
         m_shooter.StopMotor();
     } else if(m_target == State::kShooting){
-        m_shooter.Set(.7); // fix this at grizzy
+        m_shooter.Set(kPower);
     }
-
+    frc::SmartDashboard::PutNumber("Shooter Power", kPower * 100);
 }
 
 std::string ShooterSubsystem::ToStr(State state) const{

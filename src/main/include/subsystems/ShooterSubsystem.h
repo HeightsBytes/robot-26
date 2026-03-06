@@ -38,6 +38,15 @@ class ShooterSubsystem : public frc2::SubsystemBase {
     return this->RunOnce([this, state]{SetTarget(state); });
   }
 
+  frc2::CommandPtr AddShooterPowerCMD(double amount){
+    return this->RunOnce([this, amount]{ kPower += amount; });
+  }
+  frc2::CommandPtr TimesShooterPowerCMD(double amount){
+    return this->RunOnce([this, amount]{ kPower *= amount; });
+  }
+  
+
+
 
  private:
   double StateToOutput(State state) const;
@@ -52,4 +61,7 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   
   // states
   State m_target;
+
+  // unfortunate consquence of time
+  double kPower;
 };

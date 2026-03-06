@@ -36,10 +36,10 @@ namespace DriveConstants {
 
         inline constexpr int kPidgeonID = 20;
     } // namespace CanIds
-  inline constexpr double kFrontRightOffset = -180;
-  inline constexpr double kFrontLeftOffset = 0;
-  inline constexpr double kRearRightOffset = 0;
-  inline constexpr double kRearLeftOffset = 0; // - 180 if inverted
+  inline constexpr double kFrontRightOffset = -73.38; // 3
+  inline constexpr double kFrontLeftOffset = -313.73 + 180; // 1
+  inline constexpr double kRearRightOffset = -167.52 + 180; // 4
+  inline constexpr double kRearLeftOffset = -50.8 + 180; // 2
 
   inline constexpr bool kFrontRightInverted = true;
   inline constexpr bool kFrontLeftInverted = true;
@@ -123,28 +123,29 @@ namespace OIConstants {
 
 namespace ShooterConstants{
   inline constexpr int kShooterMotorPort = 24; // i gave up numbering them real talk
+  inline constexpr double kDefaultPower = 0.7;
 }
 
 namespace IntakeConstants{
-  inline constexpr int kIntakeMotorPort = 1000;
-  inline constexpr int kPivot1MotorPort = 1000;
-  inline constexpr int kPivot2MotorPort = 1000;
+  inline constexpr int kIntakeMotorPort = 10;
+  inline constexpr int kPivot1MotorPort = 29;
+  inline constexpr int kPivot2MotorPort = 56;
 
   inline constexpr double kPivotEncoderRatio = 1;
 
-  inline constexpr int kP = 0;
+  inline constexpr int kP = 0.03;
   inline constexpr int kI = 0;
   inline constexpr int kD = 0;
-  inline constexpr double kMinOutput = -0.1;
-  inline constexpr double kMaxOutput = 0.1;
+  inline constexpr double kMinOutput = -0.25;
+  inline constexpr double kMaxOutput = 0.25;
 
   namespace Speeds{
     inline constexpr double kStopped = 0;
-    inline constexpr double kIntaking = 0.25;
+    inline constexpr double kIntaking = -0.3;
   }
   namespace PivotPositions{
     inline constexpr double kUp = 0;
-    inline constexpr double kDown = 0;
-    inline constexpr double kTolerance = 0;
+    inline constexpr double kDown = 4;
+    inline constexpr double kTolerance = 0.5;
   }
 }
