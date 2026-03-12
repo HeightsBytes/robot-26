@@ -27,6 +27,12 @@
     "cwchar": "cpp",
     "cwctype": "cpp",
     "memory_resource": "cpp",
-    "variant": "cpp"
+    "variant": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "unordered_set": "cpp",
+    "string_view": "cpp",
+    "typeindex": "cpp",
+    "typeinfo": "cpp"
   }
 }

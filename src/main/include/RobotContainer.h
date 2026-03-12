@@ -8,6 +8,7 @@
 #include <frc/PowerDistribution.h>
 #include <frc/XboxController.h>
 #include <frc2/command/button/CommandXboxController.h>
+#include <pathplanner/lib/auto/AutoBuilder.h>
 
 #include "Constants.h"
 #include "subsystems/DriveSubsystem.h"
@@ -16,11 +17,13 @@
 
 #include "commands/DefaultDrive.h"
 
+
 class RobotContainer {
  public:
   RobotContainer();
 
   frc2::CommandPtr GetAutonomousCommand();
+  frc::SendableChooser<std::string> m_chooser;
 
  private:
 

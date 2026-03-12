@@ -38,7 +38,7 @@ namespace DriveConstants {
     } // namespace CanIds
   inline constexpr double kFrontRightOffset = -73.38; // 3
   inline constexpr double kFrontLeftOffset = -313.73 + 180; // 1
-  inline constexpr double kRearRightOffset = -167.52 + 180; // 4
+  inline constexpr double kRearRightOffset = -49.92; // 4
   inline constexpr double kRearLeftOffset = -50.8 + 180; // 2
 
   inline constexpr bool kFrontRightInverted = true;
@@ -141,7 +141,7 @@ namespace IntakeConstants{
 
   namespace Speeds{
     inline constexpr double kStopped = 0;
-    inline constexpr double kIntaking = -0.3;
+    inline constexpr double kIntaking = -0.35;
   }
   namespace PivotPositions{
     inline constexpr double kUp = 0;

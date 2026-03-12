@@ -6,10 +6,21 @@
 
 #include <frc2/command/Commands.h>
 #include <frc2/command/button/POVButton.h>
+#include <cameraserver/CameraServer.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <pathplanner/lib/auto/NamedCommands.h>
+#include <pathplanner/lib/commands/PathPlannerAuto.h>
 
 RobotContainer::RobotContainer() {
   ConfigureDriverButtons();
   ConfigureOperatorButtons();
+
+  m_chooser.SetDefaultOption("None", "None");
+  m_chooser.AddOption("leave", "leave");
+
+  frc::CameraServer::StartAutomaticCapture();
+
+  frc::SmartDashboard::PutData("Auto Chooser", &m_chooser);
 
   m_drive.SetDefaultCommand(DefaultDrive(
     &m_drive, [this] { return m_driverController.GetLeftX(); },
@@ -19,6 +30,7 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureDriverButtons() {
+  /*
   m_driverController.LeftTrigger()
     .OnTrue(m_shooter.SetShooterTargetCMD(ShooterSubsystem::State::kShooting))
     .OnFalse(m_shooter.SetShooterTargetCMD(ShooterSubsystem::State::kStopped));
@@ -26,7 +38,7 @@ void RobotContainer::ConfigureDriverButtons() {
   frc2::POVButton(&m_operatorController.GetHID(), 270).OnTrue(m_shooter.AddShooterPowerCMD(-.2));
   frc2::POVButton(&m_operatorController.GetHID(), 0).OnTrue(m_shooter.AddShooterPowerCMD(.1));
   frc2::POVButton(&m_operatorController.GetHID(), 180).OnTrue(m_shooter.AddShooterPowerCMD(-.1));
-
+  */
 
   m_driverController.Start().OnTrue(m_drive.ResetGyroCMD());
   m_driverController.A()
@@ -54,5 +66,10 @@ void RobotContainer::ConfigureOperatorButtons() {
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
-  return frc2::cmd::Print("No autonomous command configured");
+  auto selected = m_chooser.GetSelected();
+    if (selected == "None") {
+      return frc2::cmd::None();
+   } else {
+      return pathplanner::PathPlannerAuto(selected).ToPtr();
+  }
 }

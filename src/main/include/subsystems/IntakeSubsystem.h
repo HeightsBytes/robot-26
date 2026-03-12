@@ -25,8 +25,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
   enum class PivotState{
     kSwitching,
     kUp,
-    kDown,
-    kStopped
+    kDown
   };
   enum class IntakeState{
     kIntaking,

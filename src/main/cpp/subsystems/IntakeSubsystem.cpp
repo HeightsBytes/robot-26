@@ -14,8 +14,9 @@ IntakeSubsystem::IntakeSubsystem() :
     m_pivot1Controller(m_pivot1.GetClosedLoopController()),
     m_pivot2Controller(m_pivot2.GetClosedLoopController()),
 
-    m_pivotTarget(PivotState::kStopped),
-    m_intakeTarget(IntakeState::kStopped) {
+    m_pivotTarget(PivotState::kSwitching),
+    m_intakeTarget(IntakeState::kStopped) 
+    {
 
         m_pivot1Config
             .SetIdleMode(rev::spark::SparkFlexConfig::IdleMode::kBrake)
@@ -53,19 +54,17 @@ void IntakeSubsystem::Periodic() {
     frc::SmartDashboard::PutString("pivot target", ToStr(m_pivotTarget));
     frc::SmartDashboard::PutNumber("pivot angle", GetPivotAngle());
 
-    /*
+    
     if(m_pivotTarget == PivotState::kDown){
-        frc::SmartDashboard::PutString("debug state", "trying to move down");
-        m_pivot1Controller.SetSetpoint(4, rev::spark::SparkFlex::ControlType::kPosition);
-        m_pivot2Controller.SetSetpoint(4, rev::spark::SparkFlex::ControlType::kPosition);
+        m_pivot1Controller.SetSetpoint(StateToOutput(PivotState::kDown), rev::spark::SparkFlex::ControlType::kPosition);
+        m_pivot2Controller.SetSetpoint(StateToOutput(PivotState::kDown), rev::spark::SparkFlex::ControlType::kPosition);
     }
     if(m_pivotTarget == PivotState::kUp){
-        frc::SmartDashboard::PutString("debug state", "trying to move up");
-        m_pivot1Controller.SetSetpoint(0, rev::spark::SparkFlex::ControlType::kPosition);
-        m_pivot2Controller.SetSetpoint(0, rev::spark::SparkFlex::ControlType::kPosition);
+        m_pivot1Controller.SetSetpoint(StateToOutput(PivotState::kUp), rev::spark::SparkFlex::ControlType::kPosition);
+        m_pivot2Controller.SetSetpoint(StateToOutput(PivotState::kUp), rev::spark::SparkFlex::ControlType::kPosition);
     }
-    */
-
+    
+    /*
     if(m_pivotTarget == PivotState::kDown){
         m_pivot1.Set(.05);
         m_pivot2.Set(.05);
@@ -74,11 +73,12 @@ void IntakeSubsystem::Periodic() {
         m_pivot1.Set(-0.05);
         m_pivot2.Set(-0.05);
     }
+    
     if(m_pivotTarget == PivotState::kStopped){
         m_pivot1.StopMotor();
         m_pivot2.StopMotor();
     }
-    
+    */
 
     //m_pivot1Controller.SetSetpoint(StateToOutput(m_pivotTarget), rev::spark::SparkMax::ControlType::kPosition); // here
     //m_pivot2Controller.SetSetpoint(StateToOutput(m_pivotTarget), rev::spark::SparkMax::ControlType::kPosition); // here
@@ -113,11 +113,9 @@ double IntakeSubsystem::StateToOutput(PivotState state) const {
 
     switch(state){
         case kUp:
-            std::printf("hi");
             return PP::kUp;
             break;
         case kDown:
-            std::printf("trying to go down");
             return PP::kDown;
             break;
         default:
