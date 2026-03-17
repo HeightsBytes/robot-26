@@ -62,9 +62,9 @@ units::degree_t PigeonGyro::GetCompassHeading() const {
     return units::degree_t(angle);
 
   // add or subtract until the angle switches sign
-  // for loop is used because while loop is not allowed
+  // for loop is used because while loop is not allowed // why??????
   // 30 is the recursion maximum which translates to roughly 30 turn in one
-  // direction before breaking
+  // direction before breaking // what is a turn what is happening
   for (int i = 0; i < 30; i++) {
     angle -= initSign * 360;
     if (std::fabs(angle) <= 180) {

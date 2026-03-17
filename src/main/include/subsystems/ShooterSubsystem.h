@@ -44,9 +44,6 @@ class ShooterSubsystem : public frc2::SubsystemBase {
   frc2::CommandPtr TimesShooterPowerCMD(double amount){
     return this->RunOnce([this, amount]{ kPower *= amount; });
   }
-  
-
-
 
  private:
   double StateToOutput(State state) const;

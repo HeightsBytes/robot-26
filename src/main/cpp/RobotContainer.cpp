@@ -42,11 +42,9 @@ void RobotContainer::ConfigureDriverButtons() {
 
   m_driverController.Start().OnTrue(m_drive.ResetGyroCMD());
   m_driverController.A()
-    .OnTrue(m_intake.SetPivotTargetCMD(IntakeSubsystem::PivotState::kDown))
-    .OnFalse(m_intake.SetPivotTargetCMD(IntakeSubsystem::PivotState::kStopped));
+    .OnTrue(m_intake.SetPivotTargetCMD(IntakeSubsystem::PivotState::kUp));
   m_driverController.B()
-    .OnTrue(m_intake.SetPivotTargetCMD(IntakeSubsystem::PivotState::kUp))
-    .OnFalse(m_intake.SetPivotTargetCMD(IntakeSubsystem::PivotState::kStopped));
+    .OnTrue(m_intake.SetPivotTargetCMD(IntakeSubsystem::PivotState::kDown));
 
   m_driverController.LeftBumper()
     .OnTrue(m_intake.SetIntakeTargetCMD(IntakeSubsystem::IntakeState::kIntaking))

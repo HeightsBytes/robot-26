@@ -34,11 +34,9 @@ IntakeSubsystem::IntakeSubsystem() :
         m_pivot1Config.closedLoop
             .Pid(IntakeConstants::kP, IntakeConstants::kI, IntakeConstants::kD)
             .PositionWrappingEnabled(false);
-            //.OutputRange(IntakeConstants::kMinOutput, IntakeConstants::kMaxOutput);
         m_pivot2Config.closedLoop
             .Pid(IntakeConstants::kP, IntakeConstants::kI, IntakeConstants::kD)
             .PositionWrappingEnabled(false);
-            //.OutputRange(IntakeConstants::kMinOutput, IntakeConstants::kMaxOutput);
 
         m_intake.Configure(m_intakeConfig, rev::spark::SparkFlex::ResetMode::kResetSafeParameters, rev::spark::SparkFlex::PersistMode::kPersistParameters);
         m_pivot1.Configure(m_pivot1Config, rev::spark::SparkFlex::ResetMode::kResetSafeParameters, rev::spark::SparkFlex::PersistMode::kPersistParameters);
@@ -54,34 +52,8 @@ void IntakeSubsystem::Periodic() {
     frc::SmartDashboard::PutString("pivot target", ToStr(m_pivotTarget));
     frc::SmartDashboard::PutNumber("pivot angle", GetPivotAngle());
 
-    
-    if(m_pivotTarget == PivotState::kDown){
-        m_pivot1Controller.SetSetpoint(StateToOutput(PivotState::kDown), rev::spark::SparkFlex::ControlType::kPosition);
-        m_pivot2Controller.SetSetpoint(StateToOutput(PivotState::kDown), rev::spark::SparkFlex::ControlType::kPosition);
-    }
-    if(m_pivotTarget == PivotState::kUp){
-        m_pivot1Controller.SetSetpoint(StateToOutput(PivotState::kUp), rev::spark::SparkFlex::ControlType::kPosition);
-        m_pivot2Controller.SetSetpoint(StateToOutput(PivotState::kUp), rev::spark::SparkFlex::ControlType::kPosition);
-    }
-    
-    /*
-    if(m_pivotTarget == PivotState::kDown){
-        m_pivot1.Set(.05);
-        m_pivot2.Set(.05);
-    }
-    if(m_pivotTarget == PivotState::kUp){
-        m_pivot1.Set(-0.05);
-        m_pivot2.Set(-0.05);
-    }
-    
-    if(m_pivotTarget == PivotState::kStopped){
-        m_pivot1.StopMotor();
-        m_pivot2.StopMotor();
-    }
-    */
-
-    //m_pivot1Controller.SetSetpoint(StateToOutput(m_pivotTarget), rev::spark::SparkMax::ControlType::kPosition); // here
-    //m_pivot2Controller.SetSetpoint(StateToOutput(m_pivotTarget), rev::spark::SparkMax::ControlType::kPosition); // here
+    m_pivot1Controller.SetSetpoint(StateToOutput(m_pivotTarget), rev::spark::SparkMax::ControlType::kPosition); // here
+    m_pivot2Controller.SetSetpoint(StateToOutput(m_pivotTarget), rev::spark::SparkMax::ControlType::kPosition); // here
 
     if(m_intakeTarget == IntakeState::kStopped){
         m_intake.StopMotor();
